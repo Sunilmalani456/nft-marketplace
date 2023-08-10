@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useContext } from 'react';
 // import { useRouter } from 'next/navigation';
 import { useDropzone } from 'react-dropzone';
 import { useTheme } from 'next-themes';
@@ -9,12 +9,16 @@ import Image from 'next/image';
 
 import { Button, Input } from '../../components';
 import images from '../../assets';
+import { NFTContext } from '../../context/NFTContext';
 
 const CreateNFT = () => {
-  // const [fileUrl, setFileUrl] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({ name: '', description: '', price: '' });
   const { theme } = useTheme();
   // const router = useRouter();
+
+  const { uploadToIPFS } = useContext(NFTContext);
 
   //   if (isLoadingNFT) {
   //     <div className="flexStart min-h-screen">
@@ -22,8 +26,10 @@ const CreateNFT = () => {
   //     </div>;
   //   }
 
-  const onDrop = useCallback(() => {
-    // uplode yor NFT
+  const onDrop = useCallback(async (acceptedFile) => {
+    const url = await uploadToIPFS(acceptedFile[0]);
+    console.log(url);
+    setFileUrl(url);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
@@ -33,7 +39,10 @@ const CreateNFT = () => {
   });
 
   const fileStyle = useMemo(() => (
-    `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed ${isDragActive && 'border-file-active'} ${isDragAccept && 'border-file-accept'} ${isDragReject && 'border-file-reject'}`
+    `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
+     ${isDragActive && ' border-file-active'} 
+     ${isDragAccept && ' border-file-accept'} 
+     ${isDragReject && ' border-file-reject'}`
   ), [isDragActive, isDragAccept, isDragReject]);
 
   return (

@@ -2,7 +2,9 @@
 
 import '../Styles/globals.css';
 import Script from 'next/script';
+
 import { ThemeProvider } from 'next-themes';
+import { NFTProvider } from '../context/NFTContext';
 
 import { Navbar, Footer } from '../components/index';
 
@@ -14,16 +16,18 @@ import { Navbar, Footer } from '../components/index';
 const RootLayout = ({ children }) => (
   <html lang="en">
     <body>
-      <ThemeProvider attribute="class">
-        <div className="dark:bg-nft-dark bg-white min-h-screen">
-          <Navbar />
-          <div className="pt-65">
-            {children}
+      <NFTProvider>
+        <ThemeProvider attribute="class">
+          <div className="dark:bg-nft-dark bg-white min-h-screen">
+            <Navbar />
+            <div className="pt-65">
+              {children}
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-        <Script src="https://kit.fontawesome.com/f92bc5c027.js" crossorigin="anonymous" />
-      </ThemeProvider>
+          <Script src="https://kit.fontawesome.com/f92bc5c027.js" crossorigin="anonymous" />
+        </ThemeProvider>
+      </NFTProvider>
     </body>
   </html>
 );

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
-
+import React, { useState, useContext } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
+import { NFTContext } from '../context/NFTContext';
 
 import images from '../assets/index';
 
@@ -45,10 +46,9 @@ const MenuItems = ({ isMobile, active, setActive, setIsOpen }) => {
 
 // eslint-disable-next-line no-unused-vars
 const ButtonGroup = ({ setActive, router, setIsOpen }) => {
-  // const { connectWallet, currentAccount } = useContext(NFTContext);
-  const hasConnected = false;
+  const { connectWallet, currentAccount } = useContext(NFTContext);
 
-  return hasConnected ? (
+  return currentAccount ? (
     <Button
       btnName="Create"
       classStyles="mx-2 rounded-xl"
@@ -63,7 +63,7 @@ const ButtonGroup = ({ setActive, router, setIsOpen }) => {
       <Button
         btnName="Connect"
         classStyles="mx-2 rounded-xl"
-        handleClick={() => {}}
+        handleClick={connectWallet}
       />
     );
 };
